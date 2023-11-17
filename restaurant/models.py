@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Avg
 from django.utils import timezone
 from django.contrib.auth.models import User
 # Create your models here.
@@ -13,22 +14,36 @@ class MenuItem(models.Model):
     inventory = models.IntegerField()
     # slug = models.SlugField(max_length=255)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, default=1)
+    average_rating = models.DecimalField(default=0, max_digits=3, decimal_places=2)
     
     def __str__(self):
         return self.title
+    def update_rating(self):
+        average = Rating.objects.filter(menu_item=self).aggregate(Avg('rating'))['rating__avg']
+        self.average_rating = average if average else 0
+        self.save()
+    
+class Rating(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    menu_item = models.ForeignKey(MenuItem, on_delete=models.CASCADE)
+    rating = models.PositiveIntegerField()
+    
+    def __str__(self):
+        return f"{self.user.username} - {self.item.name} : {self.rating}"
+    
     
 class UserComments(models.Model):
     
-    ratings = (
-        ( 1 , 'One Star'),
-        ( 2 , 'Two Stars'),
-        ( 3, 'Three Stars'),
-        ( 4 , 'Four Stars'),
-        ( 5 , 'Five Stars') 
-    )
+    # ratings = (
+    #     ( 1 , 'One Star'),
+    #     ( 2 , 'Two Stars'),
+    #     ( 3, 'Three Stars'),
+    #     ( 4 , 'Four Stars'),
+    #     ( 5 , 'Five Stars') 
+    # )
     user = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
     first_name = models.CharField(max_length=255)
-    rating = models.SmallIntegerField(default=1, choices=ratings)
+    # rating = models.SmallIntegerField(default=1, choices=ratings)
     comment = models.TextField(max_length=8000)
     created_at = models.DateTimeField(default=timezone.now)
     helpful = models.BooleanField(default=False)

@@ -2,14 +2,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>{{ item.title }}</title>
 </head>
 <body>
     <h1>{{ item.title }}</h1>
     <p>{{ item.price }}</p>
-        <h2>Add your Comment</h2>
+    <p>{{ item.average_rating }}</p>
         
         {% if user.is_authenticated %}
+            <form method="post" action="{% url 'submit_rating' id=item.id %}">
+                {% csrf_token %}
+                {{ rating_form.as_p }}
+                <button type="submit">Submit Rating</button>
+            </form>
+            <h2>Add your Comment</h2>
             <form method="post" action="{% url 'create_comment' id=item.id %}">
                 {% csrf_token %}
                 {{ form.as_p }}
