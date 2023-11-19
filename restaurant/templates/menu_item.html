@@ -7,7 +7,7 @@
 <body>
     <h1>{{ item.title }}</h1>
     <p>{{ item.price }}</p>
-    <p>{{ item.average_rating }}</p>
+    <p>Rate: {{ item.average_rating }}</p>
         
         {% if user.is_authenticated %}
             <form method="post" action="{% url 'submit_rating' id=item.id %}">

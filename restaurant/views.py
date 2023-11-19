@@ -114,3 +114,6 @@ def submit_rating(request, id):
         
     return render(request, 'menu_item.html', {'menu_item':menu_item, 'rating_form':form})
         
+        
+def about(request):
+    return render(request, 'about.html', {})

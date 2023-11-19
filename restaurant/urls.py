@@ -4,6 +4,7 @@ from django.contrib.auth import views as auth_views
 urlpatterns = [
     path('', views.index, name='home'),
     path('menu/', views.menu, name='menu'),
+    path('about/', views.about, name='about'),
     path('menu/<int:id>', views.menu_item, name='menu_item'),
     path('menu/<int:id>/create_comment', views.create_comment, name='create_comment'),
     # path('menu/<int:id>/new_comment', views.create_comment, name='new_comment'),
