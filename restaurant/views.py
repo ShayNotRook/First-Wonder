@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.http.response import HttpResponse
-from .models import UserComments, MenuItem, Rating
+from .models import UserComments, MenuItem, Rating, Cart
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login, authenticate
@@ -117,3 +117,7 @@ def submit_rating(request, id):
         
 def about(request):
     return render(request, 'about.html', {})
+
+
+def cart(request):
+    carts = Cart.objects.all()

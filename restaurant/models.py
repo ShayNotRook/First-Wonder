@@ -65,6 +65,10 @@ class Cart(models.Model):
     class Meta:
         unique_together = ('item', 'user')
     
+class CartItem(models.Model):
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField(default=1)
 
 class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
