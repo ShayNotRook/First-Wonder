@@ -12,4 +12,6 @@ urlpatterns = [
     path('logout/', auth_views.LogoutView.as_view(template_name='registration/logout.html'), name='logout'),
     path('signup/', views.signup, name='signup'),
     path('menu/<int:id>/submit_rating', views.submit_rating, name='submit_rating'),
+    path('add_to_cart/<int:cartitem_id>/', views.add_to_cart, name='add_to_cart'),
+    path('view_cart/', views.view_cart, name='view_cart')
 ]

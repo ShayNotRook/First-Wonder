@@ -10,6 +10,7 @@
     <p>Rate: {{ item.average_rating }}</p>
         
         {% if user.is_authenticated %}
+            <a href="{% url 'add_to_cart' cartitem_id=item.id %}" type="button">Add to cart</a>
             <form method="post" action="{% url 'submit_rating' id=item.id %}">
                 {% csrf_token %}
                 {{ rating_form.as_p }}

@@ -56,14 +56,14 @@ class UserComments(models.Model):
     
 
 class Cart(models.Model):
-    item = models.ForeignKey(MenuItem, on_delete=models.CASCADE, default=1, related_name='cart_items')
+    object = models.ForeignKey(MenuItem, on_delete=models.CASCADE, default=1, related_name='cart_items')
     user = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
     description = models.TextField(max_length=1500)
     quantity = models.SmallIntegerField(null=True)
     unit_price = models.DecimalField(max_digits=6, decimal_places=2, default=0)
     total_price = models.DecimalField(max_digits=6, decimal_places=2, default=0)
     class Meta:
-        unique_together = ('item', 'user')
+        unique_together = ('object', 'user')
     
 class CartItem(models.Model):
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
