@@ -123,8 +123,15 @@ def about(request):
 def add_to_cart(request, cartitem_id):
     if request.user.is_authenticated:
         menu_item = get_object_or_404(MenuItem, pk=cartitem_id)
-        cart = Cart.objects.get_or_create(user=request.user)
-        cart_item, cart_item_created = CartItem.objects.get_or_create(cart=cart, item=menu_item)
+        cart, created = Cart.objects.get_or_create(user=request.user)
+        
+        
+        if cart.user is None:
+            cart.user = request.user
+            cart.save()
+            
+            
+        cart_item, cart_item_created = CartItem.objects.get_or_create(cart=cart,user=request.user, item=menu_item, defaults={'quantity': 1})
         
         if not cart_item_created:
             cart_item.quantity +=1

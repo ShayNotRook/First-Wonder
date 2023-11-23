@@ -4,7 +4,8 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 # Create your models here.
 class Category(models.Model):
-    title= models.CharField(max_length=255)
+    slug = models.SlugField(null=True)
+    title = models.CharField(max_length=255, db_index=True)
     def __str__(self):
         return self.title
     
@@ -13,7 +14,7 @@ class MenuItem(models.Model):
     price = models.DecimalField(max_digits=6, decimal_places=2)
     inventory = models.IntegerField()
     # slug = models.SlugField(max_length=255)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, default=1)
+    category = models.ForeignKey(Category, on_delete=models.PROTECT, default=1)
     average_rating = models.DecimalField(default=0, max_digits=3, decimal_places=2)
     
     def __str__(self):
@@ -56,18 +57,18 @@ class UserComments(models.Model):
     
 
 class Cart(models.Model):
-    object = models.ForeignKey(MenuItem, on_delete=models.CASCADE, default=1, related_name='cart_items')
+    items = models.ManyToManyField('MenuItem', through='CartItem')
     user = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
     description = models.TextField(max_length=1500)
     quantity = models.SmallIntegerField(null=True)
     unit_price = models.DecimalField(max_digits=6, decimal_places=2, default=0)
     total_price = models.DecimalField(max_digits=6, decimal_places=2, default=0)
-    class Meta:
-        unique_together = ('object', 'user')
+
     
 class CartItem(models.Model):
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    item = models.ForeignKey(MenuItem, on_delete=models.CASCADE, null=True)
     quantity = models.PositiveIntegerField(default=1)
 
 class Order(models.Model):
