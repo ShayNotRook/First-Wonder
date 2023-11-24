@@ -70,7 +70,11 @@ class CartItem(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     item = models.ForeignKey(MenuItem, on_delete=models.CASCADE, null=True)
     quantity = models.PositiveIntegerField(default=1)
-
+    
+    def __str__(self):
+        return self.item.title
+        
+        
 class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     delivery = models.ForeignKey(User, on_delete=models.SET_NULL, related_name='delivery_crew', null=True)
