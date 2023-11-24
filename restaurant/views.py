@@ -156,7 +156,7 @@ def cart_items(request):
     user_cart_items = []
     
     if request.user.is_authenticated:
-        user_cart_items = CartItem.objects.filter(cart__user=reqeust.user)
+        user_cart_items = CartItem.objects.filter(cart__user=request.user)
         
         
-    return render(request, 'index.html', {'user_cart_items':user_cart_items})
+    return render(request, 'cart.html', {'user_cart_items':user_cart_items})
