@@ -151,3 +151,12 @@ def view_cart(request):
     
     # Redirect to login page if user is not authenticated
     return redirect('login')
+
+def cart_items(request):
+    user_cart_items = []
+    
+    if request.user.is_authenticated:
+        user_cart_items = CartItem.objects.filter(cart__user=reqeust.user)
+        
+        
+    return render(request, 'index.html', {'user_cart_items':user_cart_items})
